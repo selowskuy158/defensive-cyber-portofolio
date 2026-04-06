@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity 13 SSL Labs Test Site</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef5f8;
+      --panel: #ffffff;
+      --text: #14222c;
+      --muted: #47606e;
+      --accent: #0a7f8f;
+      --border: #c9d7de;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at top left, rgba(10, 127, 143, 0.12), transparent 32%),
+        linear-gradient(180deg, var(--bg), #dfecef);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    main {
+      width: min(720px, calc(100vw - 32px));
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: 0 20px 60px rgba(20, 34, 44, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1;
+    }
+
+    p {
+      margin: 0 0 14px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    code {
+      padding: 0.15rem 0.4rem;
+      border-radius: 999px;
+      background: #e3f1f4;
+      color: #0c4f58;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="meta">Defensive Cybersecurity Portfolio • Activity 13</p>
+    <h1>SSL Labs Test Deployment</h1>
+    <p>
+      This temporary site exists only to provide a real public HTTPS endpoint for
+      SSL Labs analysis as evidence for Activity 13.
+    </p>
+    <p>
+      Expected test target: <code>Vercel preview deployment</code>
+    </p>
+  </main>
+</body>
+</html>
