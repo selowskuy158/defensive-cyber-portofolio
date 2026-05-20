@@ -1,0 +1,12 @@
+Running RBAC permission matrix test...
+  OK   role=viewer GET  /content             got=200 want=200
+  OK   role=viewer POST /content/new         got=403 want=403
+  OK   role=viewer GET  /users               got=403 want=403
+  OK   role=editor GET  /content             got=200 want=200
+  OK   role=editor POST /content/new         got=302 want=302
+  OK   role=editor GET  /users               got=403 want=403
+  OK   role=admin  GET  /content             got=200 want=200
+  OK   role=admin  POST /content/new         got=302 want=302
+  OK   role=admin  GET  /users               got=200 want=200
+
+9/9 passed

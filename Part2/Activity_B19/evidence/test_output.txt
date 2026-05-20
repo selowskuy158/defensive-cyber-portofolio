@@ -1,0 +1,12 @@
+=== Stage 1: confirm the bug ===
+  vulnerable render contains executable primitives: True
+
+=== Stage 2: verify the patch ===
+  [ blocked] '<script>alert(1)</script>'                             -> 'rejected'
+  [ blocked] '<img src=x onerror=alert(1)>'                          -> 'rejected'
+  [ blocked] '<svg/onload=alert(1)>'                                 -> 'rejected'
+  [ blocked] "<a href='javascript:alert(1)'>click</a>"               -> 'rejected'
+  [ blocked] '"><script>alert(1)</script>'                           -> 'rejected'
+  [ blocked] "<iframe src='javascript:alert(1)'></iframe>"           -> 'rejected'
+
+PASS: all 6 payloads were blocked or neutralised.

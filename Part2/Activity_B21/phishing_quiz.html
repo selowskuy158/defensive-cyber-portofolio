@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Phish or Legit? — A Cybersecurity Quiz</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root { --bg:#0f1419; --card:#1c232c; --fg:#e7ecf0; --muted:#8b97a4;
+          --ok:#3ecf8e; --bad:#ff5470; --accent:#5aa6ff; }
+  * { box-sizing:border-box; }
+  body { font-family:-apple-system,Segoe UI,Inter,sans-serif; background:var(--bg);
+         color:var(--fg); margin:0; padding:24px; min-height:100vh; }
+  .wrap { max-width:760px; margin:0 auto; }
+  h1 { margin-top:0; font-size:1.6rem; }
+  .progress { background:#2a3340; height:6px; border-radius:3px; overflow:hidden;
+              margin-bottom:24px; }
+  .progress > div { background:var(--accent); height:100%; transition:width 0.3s; }
+  .card { background:var(--card); border-radius:12px; padding:24px; margin-bottom:20px;
+          box-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .email-mock { background:#fff; color:#222; border-radius:8px; padding:16px;
+                font-family:Arial,sans-serif; font-size:0.9rem; margin:16px 0; }
+  .email-header { border-bottom:1px solid #ddd; padding-bottom:8px; margin-bottom:8px;
+                  font-size:0.85rem; color:#555; }
+  .email-header strong { color:#222; }
+  .email-subject { font-weight:700; font-size:1rem; color:#000; margin:6px 0; }
+  .email-body { line-height:1.4; }
+  .email-body a { color:#1a73e8; text-decoration:underline; }
+  .choices { display:grid; gap:10px; }
+  button.choice { background:#2a3340; color:var(--fg); border:2px solid transparent;
+                  padding:14px 16px; border-radius:8px; font-size:1rem; cursor:pointer;
+                  text-align:left; transition:all 0.15s; }
+  button.choice:hover:not(:disabled) { border-color:var(--accent); }
+  button.choice.selected.correct { border-color:var(--ok); background:rgba(62,207,142,0.15); }
+  button.choice.selected.wrong { border-color:var(--bad); background:rgba(255,84,112,0.15); }
+  button.choice.show-correct { border-color:var(--ok); }
+  button.choice:disabled { cursor:default; opacity:0.85; }
+  .explanation { margin-top:16px; padding:14px; border-left:3px solid var(--accent);
+                 background:rgba(90,166,255,0.08); border-radius:6px; }
+  .explanation h4 { margin:0 0 6px 0; color:var(--accent); }
+  .explanation .verdict { font-weight:700; margin-bottom:8px; }
+  .verdict.phish { color:var(--bad); }
+  .verdict.legit { color:var(--ok); }
+  .nav { display:flex; justify-content:space-between; align-items:center; margin-top:20px; }
+  button.next { background:var(--accent); color:#fff; border:none; padding:10px 20px;
+                border-radius:6px; font-size:1rem; cursor:pointer; }
+  button.next:disabled { opacity:0.4; cursor:not-allowed; }
+  .results { text-align:center; }
+  .score-big { font-size:3rem; font-weight:700; color:var(--accent); }
+  .score-label { color:var(--muted); margin-top:4px; }
+  .red-flags { text-align:left; margin-top:24px; }
+  .red-flags li { margin-bottom:6px; }
+  .restart { margin-top:20px; background:transparent; color:var(--accent);
+             border:1px solid var(--accent); padding:8px 18px; border-radius:6px;
+             cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Phish or Legit?</h1>
+  <p style="color:var(--muted)">Look at each email. Decide if it's a phishing attempt or a legitimate message. There's no time limit — read carefully.</p>
+  <div class="progress"><div id="bar"></div></div>
+  <div id="root"></div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    from: '"PayPal Security" &lt;security@paypa1-support.com&gt;',
+    to: 'you@example.com',
+    subject: 'Urgent: Your account will be suspended in 24 hours',
+    body: `Dear Customer,<br><br>
+      We have detected unusual activity on your PayPal account. To avoid suspension,
+      please verify your identity within 24 hours by clicking the link below:<br><br>
+      <a href="http://paypa1-secure-login.com/verify">Verify my account now</a><br><br>
+      Failure to act will result in permanent suspension.<br><br>Regards,<br>PayPal Security Team`,
+    answer: 'phish',
+    flags: [
+      'Sender domain is <code>paypa1-support.com</code> — note the digit "1" replacing the letter "l". Classic typo-squatting.',
+      'Generic greeting "Dear Customer" — real PayPal uses your name.',
+      'Urgency / threat language ("suspended in 24 hours").',
+      'Link goes to <code>paypa1-secure-login.com</code>, not <code>paypal.com</code>.',
+    ],
+  },
+  {
+    from: '"GitHub" &lt;noreply@github.com&gt;',
+    to: 'you@example.com',
+    subject: '[GitHub] A third-party OAuth application has been added to your account',
+    body: `Hey there,<br><br>
+      A third-party OAuth application (Vercel) was recently authorized to access
+      your account.<br><br>
+      Visit <a href="https://github.com/settings/applications">https://github.com/settings/applications</a>
+      for more information.<br><br>
+      To see this and other security events for your account, visit https://github.com/settings/security-log<br><br>
+      If you run into problems, please contact support by visiting https://support.github.com<br><br>
+      Thanks,<br>The GitHub Team`,
+    answer: 'legit',
+    flags: [
+      'Sender is <code>noreply@github.com</code> — the real GitHub domain.',
+      'Links point to <code>github.com</code> subpaths, not lookalike domains.',
+      'No password / login is requested — it just confirms an event.',
+      'Tone is factual, not urgent or threatening.',
+    ],
+  },
+  {
+    from: '"Microsoft 365" &lt;account-noreply@microsft365-team.com&gt;',
+    to: 'you@example.com',
+    subject: 'Action required: Your password expires today',
+    body: `Hello,<br><br>
+      Your Microsoft 365 password expires today at 5:00 PM. To keep your account
+      active, please re-enter your current password here:<br><br>
+      <a href="http://login.microsft365-team.com/auth">Confirm password</a><br><br>
+      &mdash; Microsoft 365 Identity Team`,
+    answer: 'phish',
+    flags: [
+      'Sender domain <code>microsft365-team.com</code> — "microsft" missing an "o", and "-team" suffix is not Microsoft.',
+      'Real Microsoft never asks you to "re-enter your current password" via email.',
+      'Time-pressure ("expires today at 5:00 PM").',
+      'HTTP link (not HTTPS) to a credential form — never type a password into an HTTP page.',
+    ],
+  },
+  {
+    from: '"Australia Post" &lt;tracking@auspost-delivery.online&gt;',
+    to: 'you@example.com',
+    subject: 'Parcel delivery failed — pay $1.99 redelivery fee',
+    body: `Hi,<br><br>
+      We attempted to deliver your parcel but no one was home. Pay the
+      $1.99 redelivery fee to reschedule:<br><br>
+      <a href="http://auspost-delivery.online/pay">Pay redelivery fee</a><br><br>
+      Track: AU2847291823<br><br>Australia Post`,
+    answer: 'phish',
+    flags: [
+      'Real Australia Post never charges a redelivery fee by SMS/email link.',
+      'Sender domain is <code>auspost-delivery.online</code>, not <code>auspost.com.au</code>.',
+      'Small dollar amount is a classic trick to get card details with low friction.',
+      'HTTP (unencrypted) payment link.',
+    ],
+  },
+  {
+    from: '"UWA IT Services" &lt;helpdesk@uwa.edu.au&gt;',
+    to: '24654019@student.uwa.edu.au',
+    subject: 'Scheduled maintenance: UWA email this Sunday',
+    body: `Dear students,<br><br>
+      UWA email services will undergo scheduled maintenance from 02:00 to 06:00
+      AWST on Sunday. Access will be intermittent during this window.<br><br>
+      No action is required from you. For details, visit
+      <a href="https://www.it.uwa.edu.au/notices">https://www.it.uwa.edu.au/notices</a>.<br><br>
+      UWA IT Services`,
+    answer: 'legit',
+    flags: [
+      'Sender domain <code>uwa.edu.au</code> matches the real university domain.',
+      'No links to enter credentials, no urgent action requested.',
+      'Linked information page is on the official <code>uwa.edu.au</code> domain.',
+      'Tone is informational. Real maintenance notices look exactly like this.',
+    ],
+  },
+  {
+    from: '"Commonwealth Bank" &lt;notify@cba-secure-au.net&gt;',
+    to: 'you@example.com',
+    subject: 'New device login detected — confirm it was you',
+    body: `Dear valued customer,<br><br>
+      A login was attempted on your NetBank account from an unrecognized device
+      in Lagos, Nigeria. If this wasn't you, secure your account immediately:<br><br>
+      <a href="http://cba-secure-au.net/lockaccount">Secure my account</a><br><br>
+      Reference: SR9X-4421<br>CommBank Fraud Department`,
+    answer: 'phish',
+    flags: [
+      'CBA domain is <code>commbank.com.au</code>, not <code>cba-secure-au.net</code>.',
+      'Fear/urgency framing (foreign login) pushing you to click immediately.',
+      'HTTP link to enter banking credentials.',
+      'Real banks ask you to log in via the official app, not via an email link.',
+    ],
+  },
+  {
+    from: '"LinkedIn" &lt;invitations@linkedin.com&gt;',
+    to: 'you@example.com',
+    subject: 'Sarah Chen invited you to connect',
+    body: `Sarah Chen<br>Security Engineer at Atlassian<br><br>
+      "Hi! I came across your portfolio. Would love to connect."<br><br>
+      <a href="https://www.linkedin.com/comm/invitation/accept">Accept invitation</a><br><br>
+      You can unsubscribe from these emails. © 2026 LinkedIn`,
+    answer: 'legit',
+    flags: [
+      'Sender domain <code>linkedin.com</code> matches LinkedIn.',
+      'Standard LinkedIn invitation format with profile context.',
+      'Link uses <code>linkedin.com/comm/</code> — LinkedIn\'s real tracking subdomain.',
+      'No request for password, payment, or sensitive info.',
+    ],
+  },
+  {
+    from: '"UWA Scholarship Office" &lt;scholarship.payment@uwa-edu.org&gt;',
+    to: '24654019@student.uwa.edu.au',
+    subject: 'Congratulations: You have been awarded a $5,000 scholarship',
+    body: `Dear Student,<br><br>
+      You have been pre-selected for the UWA International Excellence Scholarship
+      worth AUD $5,000. To claim, please provide your bank details and a copy of
+      your student ID at the secure link below:<br><br>
+      <a href="http://uwa-edu.org/claim-scholarship">Claim my scholarship</a><br><br>
+      This offer expires in 48 hours.<br><br>UWA Scholarship Office`,
+    answer: 'phish',
+    flags: [
+      'Sender domain <code>uwa-edu.org</code> is not the real <code>uwa.edu.au</code>.',
+      'Real scholarships are never "pre-awarded" without an application.',
+      'Asking for bank details and student ID by web form is a phishing classic.',
+      'Artificial urgency ("expires in 48 hours").',
+    ],
+  },
+  {
+    from: '"Google" &lt;no-reply@accounts.google.com&gt;',
+    to: 'you@example.com',
+    subject: 'Security alert: New sign-in on Windows',
+    body: `New sign-in on Windows<br>your.email@gmail.com<br><br>
+      A new device signed in to your Google Account. If this was you, you don't need
+      to do anything. If not, we'll help you secure your account.<br><br>
+      <a href="https://myaccount.google.com/notifications">Check activity</a><br><br>
+      You received this email to let you know about important changes to your Google
+      Account and services.`,
+    answer: 'legit',
+    flags: [
+      'Sender is <code>no-reply@accounts.google.com</code> — Google\'s real notification sender.',
+      'Link points to <code>myaccount.google.com</code>.',
+      'No password or credentials requested.',
+      'Calm, factual language with a clear "if this was you, do nothing" path.',
+    ],
+  },
+  {
+    from: '"IT Support" &lt;it.support.helpdesk@gmail.com&gt;',
+    to: '24654019@student.uwa.edu.au',
+    subject: 'Mailbox storage full — verify to keep emails',
+    body: `Hello,<br><br>
+      Your mailbox is 99% full. To prevent losing emails, verify your account
+      now using your UWA password:<br><br>
+      Username: ____________<br>Password: ____________<br><br>
+      Reply to this email with the details above.<br><br>IT Support Team`,
+    answer: 'phish',
+    flags: [
+      'Sender uses <code>gmail.com</code> — UWA IT would never email from a personal Gmail.',
+      'Asks you to send your password by email — no legitimate IT department ever does this.',
+      'Generic threat ("losing emails").',
+      'No links to a real portal — just a reply-back credential capture.',
+    ],
+  },
+];
+
+const root = document.getElementById('root');
+const bar = document.getElementById('bar');
+let index = 0;
+let score = 0;
+const answers = [];
+
+function render() {
+  if (index >= QUESTIONS.length) { renderResults(); return; }
+  bar.style.width = ((index) / QUESTIONS.length * 100) + '%';
+  const q = QUESTIONS[index];
+  root.innerHTML = `
+    <div class="card">
+      <div style="color:var(--muted);font-size:0.9rem">Question ${index + 1} of ${QUESTIONS.length}</div>
+      <div class="email-mock">
+        <div class="email-header"><strong>From:</strong> ${q.from}<br>
+          <strong>To:</strong> ${q.to}</div>
+        <div class="email-subject">${q.subject}</div>
+        <div class="email-body">${q.body}</div>
+      </div>
+      <div class="choices">
+        <button class="choice" data-choice="phish">🎣 Phishing attempt</button>
+        <button class="choice" data-choice="legit">✅ Legitimate message</button>
+      </div>
+      <div id="explanation" style="display:none"></div>
+      <div class="nav">
+        <span id="score-readout" style="color:var(--muted)">Score: ${score} / ${index}</span>
+        <button class="next" id="next-btn" disabled>Next →</button>
+      </div>
+    </div>`;
+  root.querySelectorAll('.choice').forEach(btn => {
+    btn.addEventListener('click', () => handleChoice(btn.dataset.choice));
+  });
+  document.getElementById('next-btn').addEventListener('click', () => { index++; render(); });
+}
+
+function handleChoice(choice) {
+  const q = QUESTIONS[index];
+  const correct = (choice === q.answer);
+  if (correct) score++;
+  answers.push({ q: index, choice, correct });
+  const buttons = root.querySelectorAll('.choice');
+  buttons.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.choice === q.answer) b.classList.add('show-correct');
+    if (b.dataset.choice === choice) b.classList.add('selected', correct ? 'correct' : 'wrong');
+  });
+  const exp = document.getElementById('explanation');
+  exp.style.display = 'block';
+  exp.className = 'explanation';
+  exp.innerHTML = `
+    <h4>Explanation</h4>
+    <div class="verdict ${q.answer}">This email is ${q.answer === 'phish' ? '🎣 PHISHING' : '✅ LEGITIMATE'}.</div>
+    <ul>${q.flags.map(f => `<li>${f}</li>`).join('')}</ul>`;
+  document.getElementById('score-readout').textContent = `Score: ${score} / ${index + 1}`;
+  document.getElementById('next-btn').disabled = false;
+}
+
+function renderResults() {
+  bar.style.width = '100%';
+  const pct = Math.round(score / QUESTIONS.length * 100);
+  const msg = pct >= 90 ? "Excellent — you're hard to fool."
+           : pct >= 70 ? "Good — but a sophisticated phish could still catch you."
+           : pct >= 50 ? "Okay — review the red-flag patterns below."
+           : "Concerning — please review the patterns and try again.";
+  const wrong = answers.filter(a => !a.correct).map(a => `Q${a.q + 1}`);
+  root.innerHTML = `
+    <div class="card results">
+      <div class="score-big">${score} / ${QUESTIONS.length}</div>
+      <div class="score-label">${pct}% — ${msg}</div>
+      ${wrong.length ? `<div style="color:var(--muted);margin-top:10px">Got wrong: ${wrong.join(', ')}</div>` : ''}
+      <ul class="red-flags">
+        <li><strong>Check the sender domain</strong> — typo-squats (paypa1 vs paypal, microsft vs microsoft) are dead giveaways.</li>
+        <li><strong>Hover before clicking</strong> — the displayed link text often doesn't match the actual URL.</li>
+        <li><strong>HTTPS for credential forms</strong> — never enter a password on an HTTP page.</li>
+        <li><strong>Urgency = suspicion</strong> — "24 hours", "expires today", "act now" are pressure tactics.</li>
+        <li><strong>No legitimate IT/bank asks for your password by email or web form.</strong></li>
+        <li><strong>Generic greetings</strong> ("Dear Customer") suggest a mass-sent phish.</li>
+      </ul>
+      <button class="restart" onclick="location.reload()">Try again</button>
+    </div>`;
+}
+
+render();
+</script>
+</body>
+</html>

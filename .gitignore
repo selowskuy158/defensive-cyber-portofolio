@@ -1,5 +1,57 @@
+# --- OS / editor cruft ---
 .DS_Store
-~$*.docx
+Thumbs.db
+desktop.ini
+~$*
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# --- Secrets / credentials (NEVER commit) ---
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*credentials*
+*secret*
+id_rsa
+id_ed25519
+*.kdbx
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# --- Node ---
+node_modules/
+npm-debug.log
+yarn-error.log
+.next/
 .vercel/
+
+# --- Build artefacts ---
+dist/
+build/
+out/
 tmp/
+*.log
+
+# --- Backup / temp ---
+*.bak
+*.orig
+*.tmp
+
+# --- Office lock files ---
+~$*.docx
+~$*.xlsx
+~$*.pptx
 DEFENSIVE%20CYBERSECURITY%20PORTFOLIO.docx

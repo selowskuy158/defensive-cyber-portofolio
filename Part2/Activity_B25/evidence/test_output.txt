@@ -1,0 +1,79 @@
+=== TEST 1: MALICIOUS IP ===
+IOC: 185.220.101.1  (type=ip)
+RISK: 85/100  [HIGH]
+------------------------------------------------------------
+  [!] urlhaus      verdict=malicious  score= 90  {'url_count': 42, 'blacklists': ['spamhaus_dbl']}
+  [!] threatfox    verdict=malicious  score= 80  {'malware': 'Emotet', 'confidence': 100}
+  [!] abuseipdb    verdict=malicious  score= 95  {'reports': 230, 'country': 'RU'}
+  [!] virustotal   verdict=malicious  score= 78  {'malicious_engines': 47, 'total_engines': 60}
+
+=== TEST 2: CLEAN IP ===
+IOC: 8.8.8.8  (type=ip)
+RISK: 0/100  [LOW]
+------------------------------------------------------------
+  [ ] urlhaus      verdict=clean      score=  0  {'query_status': 'no_results'}
+  [ ] threatfox    verdict=clean      score=  0  {'query_status': 'no_results'}
+  [ ] abuseipdb    verdict=clean      score=  2  {'reports': 0, 'country': 'US'}
+  [ ] virustotal   verdict=clean      score=  0  {'malicious_engines': 0, 'total_engines': 90}
+
+=== TEST 3: MALICIOUS HASH (JSON output) ===
+{
+  "ioc": "44d88612fea8a8f36de82e1278abb02f",
+  "ioc_type": "hash",
+  "risk_score": 85,
+  "risk_band": "HIGH",
+  "sources": [
+    {
+      "source": "urlhaus",
+      "verdict": "malicious",
+      "score": 90,
+      "details": {
+        "url_count": 42,
+        "blacklists": [
+          "spamhaus_dbl"
+        ]
+      },
+      "error": null
+    },
+    {
+      "source": "threatfox",
+      "verdict": "malicious",
+      "score": 80,
+      "details": {
+        "malware": "Emotet",
+        "confidence": 100
+      },
+      "error": null
+    },
+    {
+      "source": "abuseipdb",
+      "verdict": "malicious",
+      "score": 95,
+      "details": {
+        "reports": 230,
+        "country": "RU"
+      },
+      "error": null
+    },
+    {
+      "source": "virustotal",
+      "verdict": "malicious",
+      "score": 78,
+      "details": {
+        "malicious_engines": 47,
+        "total_engines": 60
+      },
+      "error": null
+    }
+  ],
+  "timestamp": 1779270304.7066271
+}
+
+=== TEST 4: LIVE URLHAUS QUERY ===
+IOC: 8.8.8.8  (type=ip)
+RISK: 0/100  [LOW]
+------------------------------------------------------------
+  [?] urlhaus      verdict=unknown    score=  0  error=<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)>
+  [?] threatfox    verdict=unknown    score=  0  error=<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077)>
+  [-] abuseipdb    verdict=skipped    score=  0  {'reason': 'ABUSEIPDB_KEY not set'}
+  [-] virustotal   verdict=skipped    score=  0  {'reason': 'VT_KEY not set'}
