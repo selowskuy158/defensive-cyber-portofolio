@@ -1,0 +1,22 @@
+Header comparison for ruma52.cafe
+
+Before:
+strict-transport-security: already present from Vercel
+content-security-policy: missing
+x-content-type-options: missing
+referrer-policy: missing
+permissions-policy: missing
+cross-origin-opener-policy: missing
+x-frame-options: missing
+
+After production deployment:
+strict-transport-security: present
+content-security-policy: present
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+permissions-policy: present
+cross-origin-opener-policy: same-origin
+x-frame-options: DENY
+
+Live production proof:
+Part2/Activity_B22/evidence/b22-live-after-headers.txt

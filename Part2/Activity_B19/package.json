@@ -1,0 +1,14 @@
+{
+  "name": "b19-stored-xss-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local stored XSS vulnerability and patch demonstration for B19.",
+  "scripts": {
+    "test": "python3 test_xss.py",
+    "start:vulnerable": "node vulnerable/server.js",
+    "start:patched": "node patched/server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

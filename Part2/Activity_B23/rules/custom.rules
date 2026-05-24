@@ -1,0 +1,35 @@
+# =============================================================
+# custom.rules — Suricata rules for CITS2006 B23 IDS activity
+# =============================================================
+# Five detection categories, each mapped to a test PCAP.
+# Rules are tuned for PCAP-replay mode (no live TCP state).
+
+# ---- 1. PORT SCAN detection ------------------------------------
+# TCP SYN-only packet to common service ports from external net.
+# In production you'd add a threshold; here each SYN triggers
+# so the log clearly shows the scan sweep.
+alert tcp $EXTERNAL_NET any -> $HOME_NET 1:1024 (msg:"CITS2006 - TCP SYN to service port (port scan indicator)"; flags:S,12; classtype:attempted-recon; sid:2006001; rev:3;)
+
+# ---- 2. ICMP FLOOD detection -----------------------------------
+# Large ICMP echo-request (payload >512 bytes) from external.
+alert icmp $EXTERNAL_NET any -> $HOME_NET any (msg:"CITS2006 - Large ICMP echo-request (flood indicator)"; itype:8; dsize:>512; classtype:attempted-dos; sid:2006002; rev:3;)
+
+# ---- 3. SSH BRUTE-FORCE detection ------------------------------
+# Any TCP SYN to port 22 from external — each is a connection attempt.
+alert tcp $EXTERNAL_NET any -> $HOME_NET 22 (msg:"CITS2006 - SSH connection attempt (brute-force indicator)"; flags:S,12; classtype:attempted-admin; sid:2006003; rev:3;)
+
+# ---- 4. HTTP SCANNER USER-AGENT detection ----------------------
+# Match on raw TCP payload for scanner user-agent strings.
+alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (msg:"CITS2006 - Nikto web scanner detected"; content:"Nikto"; nocase; classtype:web-application-attack; sid:2006004; rev:3;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (msg:"CITS2006 - sqlmap scanner detected"; content:"sqlmap"; nocase; classtype:web-application-attack; sid:2006005; rev:3;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (msg:"CITS2006 - Nmap scripting engine detected"; content:"Nmap Scripting Engine"; nocase; classtype:web-application-attack; sid:2006006; rev:3;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (msg:"CITS2006 - DirBuster scanner detected"; content:"DirBuster"; nocase; classtype:web-application-attack; sid:2006007; rev:3;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 80 (msg:"CITS2006 - Gobuster scanner detected"; content:"gobuster"; nocase; classtype:web-application-attack; sid:2006008; rev:3;)
+
+# ---- 5. DNS EXFILTRATION detection -----------------------------
+# DNS query containing a known-bad C2 domain.
+alert dns any any -> any any (msg:"CITS2006 - DNS exfiltration (query to evil.com C2 domain)"; dns.query; content:".evil.com"; nocase; classtype:bad-unknown; sid:2006009; rev:3;)

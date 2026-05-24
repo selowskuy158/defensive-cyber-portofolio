@@ -1,0 +1,25 @@
+Fetching deployment "ruma52.cafe" in christophera1508-5835s-projects
+> Fetched deployment "ruma52-cafe-4u85yvcv5-christophera1508-5835s-projects.vercel.app" in christophera1508-5835s-projects [1s]
+
+  General
+
+    id		dpl_Gvzf6xm6DBnKceA5RQJJHBxZpDnP
+    name	ruma52-cafe
+    target	production
+    status	● Ready
+    url		https://ruma52-cafe-4u85yvcv5-christophera1508-5835s-projects.vercel.app
+    created	Sun May 24 2026 19:20:10 GMT+0800 (Australian Western Standard Time) [56m ago]
+
+
+  Aliases
+
+    ╶ https://ruma52.cafe
+    ╶ https://ruma52-cafe.vercel.app
+    ╶ https://ruma52-cafe-christophera1508-5835s-projects.vercel.app
+    
+
+  Builds
+
+    ╶ .        [0ms]
+    
+

@@ -18,6 +18,7 @@ desktop.ini
 *.pfx
 *credentials*
 *secret*
+!.github/workflows/secret-scan.yml
 id_rsa
 id_ed25519
 *.kdbx

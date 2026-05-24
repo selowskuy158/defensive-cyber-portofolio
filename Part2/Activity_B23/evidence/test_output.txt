@@ -1,0 +1,106 @@
+=============================================================
+  CITS2006 B23 — Suricata IDS Detection Test Results
+=============================================================
+
+IDS Engine: Suricata 8.0.5 RELEASE
+Date: 2026-05-21 17:35:34 AWST
+Test PCAPs: synthetic (no real network attacked)
+
+=============================================================
+  DETECTION RESULTS BY ATTACK TYPE
+=============================================================
+
+--- port_scan.pcap ---
+  Total alerts: 201
+
+  Unique rules triggered:
+    [1] CITS2006 - SSH connection attempt (brute-force indicator) 
+    [200] CITS2006 - TCP SYN to service port (port scan indicator) 
+
+  Sample alerts:
+    05/21/2024-22:00:00.100000  [**] [1:2006003:3] CITS2006 - SSH connection attempt (brute-force indicator) [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.50:53024 -> 192.168.1.100:22
+    05/21/2024-22:00:00.100000  [**] [1:2006001:3] CITS2006 - TCP SYN to service port (port scan indicator) [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.50:53024 -> 192.168.1.100:22
+    05/21/2024-22:00:00.350000  [**] [1:2006001:3] CITS2006 - TCP SYN to service port (port scan indicator) [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.50:20614 -> 192.168.1.100:27
+
+--- icmp_flood.pcap ---
+  Total alerts: 100
+
+  Unique rules triggered:
+    [100] CITS2006 - Large ICMP echo-request (flood indicator) 
+
+  Sample alerts:
+    05/21/2024-22:00:00.000000  [**] [1:2006002:3] CITS2006 - Large ICMP echo-request (flood indicator) [**] [Classification: Attempted Denial of Service] [Priority: 2] {ICMP} 203.0.113.50:8 -> 192.168.1.100:0
+    05/21/2024-22:00:00.050000  [**] [1:2006002:3] CITS2006 - Large ICMP echo-request (flood indicator) [**] [Classification: Attempted Denial of Service] [Priority: 2] {ICMP} 203.0.113.50:8 -> 192.168.1.100:0
+    05/21/2024-22:00:00.100000  [**] [1:2006002:3] CITS2006 - Large ICMP echo-request (flood indicator) [**] [Classification: Attempted Denial of Service] [Priority: 2] {ICMP} 203.0.113.50:8 -> 192.168.1.100:0
+
+--- ssh_bruteforce.pcap ---
+  Total alerts: 100
+
+  Unique rules triggered:
+    [50] CITS2006 - SSH connection attempt (brute-force indicator) 
+    [50] CITS2006 - TCP SYN to service port (port scan indicator) 
+
+  Sample alerts:
+    05/21/2024-22:00:01.000000  [**] [1:2006003:3] CITS2006 - SSH connection attempt (brute-force indicator) [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.50:52730 -> 192.168.1.100:22
+    05/21/2024-22:00:01.000000  [**] [1:2006001:3] CITS2006 - TCP SYN to service port (port scan indicator) [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.50:52730 -> 192.168.1.100:22
+    05/21/2024-22:00:02.500000  [**] [1:2006003:3] CITS2006 - SSH connection attempt (brute-force indicator) [**] [Classification: Attempted Administrator Privilege Gain] [Priority: 1] {TCP} 203.0.113.50:13277 -> 192.168.1.100:22
+
+--- http_scanner.pcap ---
+  Total alerts: 10
+
+  Unique rules triggered:
+    [1] CITS2006 - DirBuster scanner detected 
+    [1] CITS2006 - Gobuster scanner detected 
+    [1] CITS2006 - Nikto web scanner detected 
+    [1] CITS2006 - Nmap scripting engine detected 
+    [5] CITS2006 - TCP SYN to service port (port scan indicator) 
+    [1] CITS2006 - sqlmap scanner detected 
+
+  Sample alerts:
+    05/21/2024-22:00:00.503000  [**] [1:2006001:3] CITS2006 - TCP SYN to service port (port scan indicator) [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.50:40001 -> 192.168.1.100:80
+    05/21/2024-22:00:00.000000  [**] [1:2006001:3] CITS2006 - TCP SYN to service port (port scan indicator) [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.50:40000 -> 192.168.1.100:80
+    05/21/2024-22:00:02.011999  [**] [1:2006001:3] CITS2006 - TCP SYN to service port (port scan indicator) [**] [Classification: Attempted Information Leak] [Priority: 2] {TCP} 203.0.113.50:40004 -> 192.168.1.100:80
+
+--- dns_exfil.pcap ---
+  Total alerts: 5
+
+  Unique rules triggered:
+    [5] CITS2006 - DNS exfiltration (query to evil.com C2 domain) 
+
+  Sample alerts:
+    05/21/2024-22:00:00.000000  [**] [1:2006009:3] CITS2006 - DNS exfiltration (query to evil.com C2 domain) [**] [Classification: Potentially Bad Traffic] [Priority: 2] {UDP} 192.168.1.100:27584 -> 8.8.8.8:53
+    05/21/2024-22:00:03.000000  [**] [1:2006009:3] CITS2006 - DNS exfiltration (query to evil.com C2 domain) [**] [Classification: Potentially Bad Traffic] [Priority: 2] {UDP} 192.168.1.100:21588 -> 8.8.8.8:53
+    05/21/2024-22:00:01.000000  [**] [1:2006009:3] CITS2006 - DNS exfiltration (query to evil.com C2 domain) [**] [Classification: Potentially Bad Traffic] [Priority: 2] {UDP} 192.168.1.100:31617 -> 8.8.8.8:53
+
+=============================================================
+  COMBINED PCAP (all attacks merged)
+=============================================================
+  Total alerts: 416
+
+  Alert breakdown by rule:
+     255 CITS2006 - TCP SYN to service port (port scan indicator) 
+     100 CITS2006 - Large ICMP echo-request (flood indicator) 
+      51 CITS2006 - SSH connection attempt (brute-force indicator) 
+       5 CITS2006 - DNS exfiltration (query to evil.com C2 domain) 
+       1 CITS2006 - sqlmap scanner detected 
+       1 CITS2006 - Nmap scripting engine detected 
+       1 CITS2006 - Nikto web scanner detected 
+       1 CITS2006 - Gobuster scanner detected 
+       1 CITS2006 - DirBuster scanner detected 
+
+=============================================================
+  SUMMARY
+=============================================================
+
+  Attack Type          | Packets | Alerts | Detection
+  ---------------------|---------|--------|----------
+  Port Scan (SYN)     |   200  |   201   | DETECTED
+  ICMP Flood          |   100  |   100   | DETECTED
+  SSH Brute-Force     |   50  |   100   | DETECTED
+  HTTP Scanner UA     |   20  |   10   | DETECTED
+  DNS Exfiltration    |   5  |   5   | DETECTED
+
+  All 5 attack types successfully detected by Suricata.
+  9 custom rules loaded, all triggered at least once.
+
+=============================================================

@@ -1,0 +1,19 @@
+B19 real local XSS execution evidence
+Payload: <script>alert(1)</script>
+
+1) Vulnerable app: POST payload to http://127.0.0.1:3001/add
+HTTP status: 302 redirect after storing task
+
+2) Vulnerable page contains executable script:
+CONFIRMED: raw <script>alert(1)</script> appears in HTML
+
+3) Patched app: POST same payload to http://127.0.0.1:3002/add
+HTTP status: 400 bad request, payload rejected
+
+4) Patched app security headers:
+Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+5) Patched page raw script search:
+PASS: raw script tag is not present in patched page

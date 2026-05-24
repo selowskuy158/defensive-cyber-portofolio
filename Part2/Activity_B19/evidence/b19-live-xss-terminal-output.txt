@@ -1,0 +1,38 @@
+=== vulnerable live exploit check ===
+POST payload to vulnerable app: <script>alert(1)</script>
+HTTP/1.1 302 Found
+X-Powered-By: Express
+Location: /
+Vary: Accept
+Content-Type: text/plain; charset=utf-8
+Content-Length: 23
+Date: Sat, 23 May 2026 12:41:47 GMT
+Connection: keep-alive
+
+Vulnerable page output containing executable script tag:
+2:    <title>Todo (vulnerable)</title>
+4:    <ul><li><script>alert(1)</script></li><li><script>alert(1)</script></li></ul>
+
+=== patched live exploit check ===
+POST same payload to patched app: <script>alert(1)</script>
+HTTP/1.1 400 Bad Request
+X-Powered-By: Express
+Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Content-Type: text/html; charset=utf-8
+Content-Length: 71
+ETag: W/"47-YK+9KIsQjE8STBRwQ7qNmWUOf7g"
+Date: Sat, 23 May 2026 12:41:47 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+Patched response headers:
+HTTP/1.1 200 OK
+Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+Patched page search for raw script tag:
+OK: raw script tag not present in patched page

@@ -1,0 +1,5 @@
+Original image: (600, 600) RGB
+Watermarked image: (600, 600) RGB
+Changed pixels: 4460
+Max channel difference: 1
+Interpretation: only least-significant red-channel changes are visible to the extractor, not to normal viewing.

@@ -1,0 +1,24 @@
+2026-05-21 19:20:03,529 | LOGIN_OK user=viewer
+2026-05-21 19:20:03,532 | ALLOW user=viewer perm=content:read path=/content
+2026-05-21 19:20:03,580 | LOGIN_OK user=viewer
+2026-05-21 19:20:03,581 | DENY user=viewer perm=content:create path=/content/new
+2026-05-21 19:20:03,630 | LOGIN_OK user=viewer
+2026-05-21 19:20:03,632 | DENY user=viewer perm=users:manage path=/users
+2026-05-21 19:20:03,681 | LOGIN_OK user=editor
+2026-05-21 19:20:03,683 | ALLOW user=editor perm=content:read path=/content
+2026-05-21 19:20:03,732 | LOGIN_OK user=editor
+2026-05-21 19:20:03,733 | ALLOW user=editor perm=content:create path=/content/new
+2026-05-21 19:20:03,781 | LOGIN_OK user=editor
+2026-05-21 19:20:03,782 | DENY user=editor perm=users:manage path=/users
+2026-05-21 19:20:03,831 | LOGIN_OK user=admin
+2026-05-21 19:20:03,832 | ALLOW user=admin perm=content:read path=/content
+2026-05-21 19:20:03,881 | LOGIN_OK user=admin
+2026-05-21 19:20:03,882 | ALLOW user=admin perm=content:create path=/content/new
+2026-05-21 19:20:03,931 | LOGIN_OK user=admin
+2026-05-21 19:20:03,932 | ALLOW user=admin perm=users:manage path=/users
+2026-05-21 19:21:59,010 | LOGIN_OK user=viewer
+2026-05-21 19:22:00,801 | DENY user=viewer perm=users:manage path=/users
+2026-05-21 19:23:26,417 | LOGIN_OK user=admin
+2026-05-21 19:23:28,301 | ALLOW user=admin perm=users:manage path=/users
+2026-05-21 19:23:44,333 | LOGIN_OK user=editor
+2026-05-21 19:23:46,207 | ALLOW user=editor perm=content:read path=/content

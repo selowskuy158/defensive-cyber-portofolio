@@ -1,9 +1,8 @@
-/Users/Chris/Desktop/Projects/defensive-cyber-portofolio/.claude/worktrees/eager-mirzakhani-3ee412/Part2/Activity_B30/watermark.py:59: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
-  pixels = list(img.getdata())
 [control] watermarked PNG extract  -> 'AI-GENERATED-CITS2006-2026-CRA-24654019'
+[local edit] -> 'AI-GENERATED-CITS2006-2026-CRA-24654019'
 [jpeg q=95] -> None
 [jpeg q=75] -> None
 [jpeg q=50] -> None
 [resize 50%] -> None
-[crop 80%] -> None
-[noise 1%] -> 'AI-GGNERATED-CITS2006-2026-CZA-24654019'
+[crop 80%] -> 'AI-GENERATED-CITS2006-2026-CRA-24654019'
+[noise 1%] -> 'AI-GENERATED-CITS2006-2026-CRA-24654019'

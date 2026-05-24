@@ -1,0 +1,25 @@
+# Live production headers for https://ruma52.cafe after B22 deployment
+Sun May 24 20:16:00 AWST 2026
+
+HTTP/2 200 
+accept-ranges: bytes
+access-control-allow-origin: *
+age: 3323
+cache-control: public, max-age=0, must-revalidate
+content-disposition: inline; filename="index.html"
+content-security-policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests
+content-type: text/html; charset=utf-8
+cross-origin-opener-policy: same-origin
+date: Sun, 24 May 2026 12:16:00 GMT
+etag: "71f5479aac0bca923ea838fc937e87d0"
+last-modified: Sun, 24 May 2026 11:20:36 GMT
+permissions-policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), fullscreen=(self)
+referrer-policy: strict-origin-when-cross-origin
+server: Vercel
+strict-transport-security: max-age=63072000
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-vercel-cache: HIT
+x-vercel-id: syd1::w29b8-1779624960251-0765c9416846
+content-length: 4323288
+

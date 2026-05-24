@@ -1,0 +1,143 @@
+======================================================================
+  PASSWORD SECURITY AUDIT REPORT
+  CITS2006 B27 — Real-world application of password security concepts
+======================================================================
+  Date:      2026-05-21 20:49:41 
+  Passwords: 8 audited
+  HIBP API:  k-anonymity (SHA-1 prefix only; full password never sent)
+
+  OVERALL: 2 strong, 2 moderate, 4 weak
+  BREACHED: 6 of 8 passwords found in known breaches
+
+----------------------------------------------------------------------
+  [1] Email account
+      Password:  *********** (11 chars)
+      Rating:    [WEAK]
+      Entropy:   56.9 bits
+      HIBP:      BREACHED (2,254,650 times in known leaks)
+      Policy:    PASS (NIST SP 800-63B compliant)
+      Patterns:
+                 - Sequential digits detected
+      Crack time estimates:
+         Online (rate-limited)                    2.09e+07 years
+         Offline (MD5, single GPU)                15.2 days
+         Offline (bcrypt, single GPU)             69561.6 years
+
+----------------------------------------------------------------------
+  [2] Banking app
+      Password:  ********** (10 chars)
+      Rating:    [MODERATE]
+      Entropy:   65.5 bits
+      HIBP:      BREACHED (474 times in known leaks)
+      Policy:    PASS (NIST SP 800-63B compliant)
+      Crack time estimates:
+         Online (rate-limited)                    8.54e+09 years
+         Offline (MD5, single GPU)                17.1 years
+         Offline (bcrypt, single GPU)             2.85e+07 years
+
+----------------------------------------------------------------------
+  [3] University portal
+      Password:  ****** (6 chars)
+      Rating:    [WEAK]
+      Entropy:   28.2 bits
+      HIBP:      BREACHED (30,799,395 times in known leaks)
+      Policy:    FAIL
+                 - Too short (NIST minimum: 8 characters)
+                 - On the common-passwords blocklist
+      Patterns:
+                 - Keyboard walk detected: 'qwerty'
+                 - Leet-speak variant of common password 'qwerty'
+      Crack time estimates:
+         Online (rate-limited)                    17.9 days
+         Offline (MD5, single GPU)                < 1 second
+         Offline (bcrypt, single GPU)             1.4 hours
+
+----------------------------------------------------------------------
+  [4] Gaming account
+      Password:  *********** (11 chars)
+      Rating:    [MODERATE]
+      Entropy:   72.1 bits
+      HIBP:      BREACHED (3,189 times in known leaks)
+      Policy:    PASS (NIST SP 800-63B compliant)
+      Crack time estimates:
+         Online (rate-limited)                    8.03e+11 years
+         Offline (MD5, single GPU)                1605.5 years
+         Offline (bcrypt, single GPU)             2.68e+09 years
+
+----------------------------------------------------------------------
+  [5] Password manager
+      Password:  ********************************* (33 chars)
+      Rating:    [STRONG]
+      Entropy:   200.9 bits
+      HIBP:      Not found in breaches
+      Policy:    PASS (NIST SP 800-63B compliant)
+      Crack time estimates:
+         Online (rate-limited)                    4.71e+50 years
+         Offline (MD5, single GPU)                9.42e+41 years
+         Offline (bcrypt, single GPU)             1.57e+48 years
+
+----------------------------------------------------------------------
+  [6] Old Wi-Fi password
+      Password:  ******** (8 chars)
+      Rating:    [WEAK]
+      Entropy:   26.6 bits
+      HIBP:      BREACHED (70,382,347 times in known leaks)
+      Policy:    FAIL
+                 - All-numeric (easily guessable)
+                 - On the common-passwords blocklist
+      Patterns:
+                 - Keyboard walk detected: '1234'
+                 - Sequential digits detected
+      Crack time estimates:
+         Online (rate-limited)                    5.8 days
+         Offline (MD5, single GPU)                < 1 second
+         Offline (bcrypt, single GPU)             27.8 minutes
+
+----------------------------------------------------------------------
+  [7] Work VPN
+      Password:  *************** (15 chars)
+      Rating:    [STRONG]
+      Entropy:   98.3 bits
+      HIBP:      Not found in breaches
+      Policy:    PASS (NIST SP 800-63B compliant)
+      Crack time estimates:
+         Online (rate-limited)                    6.27e+19 years
+         Offline (MD5, single GPU)                1.25e+11 years
+         Offline (bcrypt, single GPU)             2.09e+17 years
+
+----------------------------------------------------------------------
+  [8] Social media
+      Password:  ******** (8 chars)
+      Rating:    [WEAK]
+      Entropy:   37.6 bits
+      HIBP:      BREACHED (7,007,763 times in known leaks)
+      Policy:    FAIL
+                 - On the common-passwords blocklist
+      Patterns:
+                 - Leet-speak variant of common password 'iloveyou'
+      Crack time estimates:
+         Online (rate-limited)                    33.1 years
+         Offline (MD5, single GPU)                2 seconds
+         Offline (bcrypt, single GPU)             40.3 days
+
+======================================================================
+  RECOMMENDATIONS
+======================================================================
+
+  [CRITICAL] Change all breached passwords immediately.
+  Breached passwords are actively used in credential-stuffing attacks.
+
+  [HIGH] Replace all WEAK passwords with randomly generated ones.
+  Use a password manager (Bitwarden is free) to generate and store
+  unique 16+ character passwords for every account.
+
+  [BEST PRACTICE] Enable 2FA/MFA on all accounts that support it.
+  Even a strong password is insufficient if the site gets breached
+  and the hash is cracked — 2FA adds an independent second factor.
+
+  [BEST PRACTICE] Use a passphrase (4+ random words) for passwords
+  you need to type manually (master password, device unlock).
+  Passphrases are easier to remember and harder to crack than short
+  complex strings.
+
+======================================================================

@@ -1,0 +1,140 @@
+[
+  {
+    "label": "Email account",
+    "length": 11,
+    "entropy_bits": 56.9,
+    "breach_count": 2254650,
+    "policy_issues": [],
+    "patterns": [
+      "Sequential digits detected"
+    ],
+    "rating": "WEAK",
+    "colour": "red",
+    "crack_times": {
+      "Online (rate-limited)": "2.09e+07 years",
+      "Offline (MD5, single GPU)": "15.2 days",
+      "Offline (bcrypt, single GPU)": "69561.6 years"
+    }
+  },
+  {
+    "label": "Banking app",
+    "length": 10,
+    "entropy_bits": 65.5,
+    "breach_count": 474,
+    "policy_issues": [],
+    "patterns": [],
+    "rating": "MODERATE",
+    "colour": "yellow",
+    "crack_times": {
+      "Online (rate-limited)": "8.54e+09 years",
+      "Offline (MD5, single GPU)": "17.1 years",
+      "Offline (bcrypt, single GPU)": "2.85e+07 years"
+    }
+  },
+  {
+    "label": "University portal",
+    "length": 6,
+    "entropy_bits": 28.2,
+    "breach_count": 30799395,
+    "policy_issues": [
+      "Too short (NIST minimum: 8 characters)",
+      "On the common-passwords blocklist"
+    ],
+    "patterns": [
+      "Keyboard walk detected: 'qwerty'",
+      "Leet-speak variant of common password 'qwerty'"
+    ],
+    "rating": "WEAK",
+    "colour": "red",
+    "crack_times": {
+      "Online (rate-limited)": "17.9 days",
+      "Offline (MD5, single GPU)": "< 1 second",
+      "Offline (bcrypt, single GPU)": "1.4 hours"
+    }
+  },
+  {
+    "label": "Gaming account",
+    "length": 11,
+    "entropy_bits": 72.1,
+    "breach_count": 3189,
+    "policy_issues": [],
+    "patterns": [],
+    "rating": "MODERATE",
+    "colour": "yellow",
+    "crack_times": {
+      "Online (rate-limited)": "8.03e+11 years",
+      "Offline (MD5, single GPU)": "1605.5 years",
+      "Offline (bcrypt, single GPU)": "2.68e+09 years"
+    }
+  },
+  {
+    "label": "Password manager",
+    "length": 33,
+    "entropy_bits": 200.9,
+    "breach_count": 0,
+    "policy_issues": [],
+    "patterns": [],
+    "rating": "STRONG",
+    "colour": "green",
+    "crack_times": {
+      "Online (rate-limited)": "4.71e+50 years",
+      "Offline (MD5, single GPU)": "9.42e+41 years",
+      "Offline (bcrypt, single GPU)": "1.57e+48 years"
+    }
+  },
+  {
+    "label": "Old Wi-Fi password",
+    "length": 8,
+    "entropy_bits": 26.6,
+    "breach_count": 70382347,
+    "policy_issues": [
+      "All-numeric (easily guessable)",
+      "On the common-passwords blocklist"
+    ],
+    "patterns": [
+      "Keyboard walk detected: '1234'",
+      "Sequential digits detected"
+    ],
+    "rating": "WEAK",
+    "colour": "red",
+    "crack_times": {
+      "Online (rate-limited)": "5.8 days",
+      "Offline (MD5, single GPU)": "< 1 second",
+      "Offline (bcrypt, single GPU)": "27.8 minutes"
+    }
+  },
+  {
+    "label": "Work VPN",
+    "length": 15,
+    "entropy_bits": 98.3,
+    "breach_count": 0,
+    "policy_issues": [],
+    "patterns": [],
+    "rating": "STRONG",
+    "colour": "green",
+    "crack_times": {
+      "Online (rate-limited)": "6.27e+19 years",
+      "Offline (MD5, single GPU)": "1.25e+11 years",
+      "Offline (bcrypt, single GPU)": "2.09e+17 years"
+    }
+  },
+  {
+    "label": "Social media",
+    "length": 8,
+    "entropy_bits": 37.6,
+    "breach_count": 7007763,
+    "policy_issues": [
+      "On the common-passwords blocklist"
+    ],
+    "patterns": [
+      "Leet-speak variant of common password 'iloveyou'"
+    ],
+    "rating": "WEAK",
+    "colour": "red",
+    "crack_times": {
+      "Online (rate-limited)": "33.1 years",
+      "Offline (MD5, single GPU)": "2 seconds",
+      "Offline (bcrypt, single GPU)": "40.3 days"
+    }
+  }
+]
